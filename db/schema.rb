@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_28_065401) do
+ActiveRecord::Schema.define(version: 2021_11_28_211243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "sender_user_id", null: false
+    t.string "message_contents", limit: 240, null: false
+    t.text "message_image"
+    t.integer "receiver_user_id", null: false
+    t.boolean "is_delete", null: false
+    t.datetime "created_at", null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "post_contents", limit: 250, null: false
+    t.text "post_image"
+    t.boolean "is_delete", null: false
+    t.datetime "created_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "usre_name", limit: 45, null: false
