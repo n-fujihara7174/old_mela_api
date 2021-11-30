@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :users do |t|
-      t.string :usre_name, null: false, limit: 45
+      t.string :user_name, null: false, limit: 45
       t.string :display_user_id, null: false, unique: true, limit: 45
       t.string :password, null: false, limit: 45
       t.string :self_introduction, limit: 120
