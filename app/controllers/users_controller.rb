@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
     def index
-
+        @users = User.joins(:post).select('users.*,posts.*')
+        render :json => @users
     end
 
     def show
