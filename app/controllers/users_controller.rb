@@ -1,7 +1,13 @@
 class UsersController < ApplicationController
 
     def index
-        @users = User.joins(:post).select('users.*,posts.*')
+        if params[:searchParam].present? then
+            logger.debug "パラメタ確認用 : #{params[:searchParam]}"
+            @users = User.joins(:post).select('users.*,posts.*')\
+            .where("user_name = ? and display_user_name = ? ", search_param.user_name, search_param.display_user_name)
+        else
+            @users = User.joins(:post).select('users.*,posts.*')
+        end
         render :json => @users
     end
 
@@ -10,5 +16,10 @@ class UsersController < ApplicationController
         render :json => @user
     end
 
+    private
+
+    def search_param
+        params.require(:searchParam).permit(:userName,:userId)
+    end
 
 end
