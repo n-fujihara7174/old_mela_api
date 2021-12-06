@@ -1,18 +1,13 @@
 class UsersController < ApplicationController
 
     def index
-        if params[:is_search].present? then
-            logger.debug "パラメタ確認用 : #{params.require(:user_name)}"
-            if (params.require(:user_name).present?) then
-                query_text = "(user_name like ?)"
-            else
-                query_text = "(user_name like ? or True)"
-            end
-            @users = User.joins(:post).select('users.*,posts.*')\
-            .where("user_name like ? and display_user_name like ? ", "%" + search_param.user_name + "%", "%" + search_param.display_user_name + "%")
-        else
-            @users = User.joins(:post).select('users.*,posts.*')
-        end
+        #logger.debug "パラメタ確認用 : #{params.require(:user_name)}"
+
+        @users = User.join_post_all
+        @users.search_user_name(params[:user_name]) if params[:user_name].present?
+        @users.search_user_id(params[:user_id]) if params[:user_id].present?
+        @users.search_is_delete(params[:is_delete]) if params[:is_delete].present?
+
         render :json => @users
     end
 
@@ -20,7 +15,4 @@ class UsersController < ApplicationController
         @user = User.joins(:post).select('users.*,posts.*').find(params[:id])
         render :json => @user
     end
-
-    private
-
 end
