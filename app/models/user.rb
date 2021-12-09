@@ -8,19 +8,11 @@ class User < ApplicationRecord
     #end
 
     def self.join_post_all()
-        return User.joins(:post).select('users.*,posts.*')
+        User.joins(:post).select('users.*, count(posts.id) as post_count').group('users.id').order(user_id: :ASC)
     end
 
-    def self.search_user_name(user_name)
-        self.where("user_name like ?", "%#{user_name}%")
+    def self.search_user_id_or_email(parameter)
+        #Rails.logger.debug "book.delete_flg #{self.joins(:post).select('users.*,posts.*').where("user_name like ?", "%#{user_name}%").size}"
+        users = self.joins(:post).select('users.*,posts.*').where("user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%")
     end
-
-    def self.search_user_id(user_id)
-        self.where("display_user_id like ?", "%#{user_id}%")
-    end
-
-    def self.search_is_delete(is_delete)
-        self.where("is_delete = ?", "%#{is_delete}%")
-    end
-
 end

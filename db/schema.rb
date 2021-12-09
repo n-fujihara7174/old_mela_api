@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 2021_12_01_205310) do
 
   create_table "users", force: :cascade do |t|
     t.string "user_name", limit: 45, null: false
-    t.string "display_user_id", limit: 45, null: false
+    t.string "user_id", limit: 45, null: false
     t.string "password", limit: 45, null: false
     t.string "self_introduction", limit: 120
     t.string "email", limit: 256, null: false
