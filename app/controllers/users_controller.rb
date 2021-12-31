@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
     def show
         @user = User.join_post_find_id(params[:id])
+        logger.debug("@userのクラス #{@user.class}")
         render :json => @user
     end
 end

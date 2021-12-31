@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_205310) do
+ActiveRecord::Schema.define(version: 2021_12_31_012026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 2021_12_01_205310) do
     t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.index ["user_id", "post_id"], name: "index_likes_on_user_id_and_post_id", unique: true
+  end
+
+  create_table "message_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "opposite_user_id", null: false
+    t.boolean "is_delete", null: false
+    t.datetime "created_at", null: false
+    t.index ["opposite_user_id"], name: "index_message_users_on_opposite_user_id"
+    t.index ["user_id"], name: "index_message_users_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -71,6 +80,8 @@ ActiveRecord::Schema.define(version: 2021_12_01_205310) do
   add_foreign_key "follows", "users", column: "follower_user_id"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "message_users", "users"
+  add_foreign_key "message_users", "users", column: "opposite_user_id"
   add_foreign_key "messages", "users", column: "receiver_user_id"
   add_foreign_key "messages", "users", column: "sender_user_id"
   add_foreign_key "posts", "users"
