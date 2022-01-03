@@ -9,7 +9,47 @@ class UsersController < ApplicationController
 
     def show
         @user = User.join_post_find_id(params[:id])
-        logger.debug("@userのクラス #{@user.class}")
         render :json => @user
+    end
+
+    def create
+        @user = User.find(get_id)
+    end
+
+    def update
+        @user = User.find(get_id[:id])
+        if @user.update(get_user_param)
+            render :json => @user
+        else
+            render :json => @user.errors, status: :unprocessable_entity
+        end
+    end
+
+    private
+
+    def get_id
+        params.require(:user).permit(:id)
+    end
+
+    def get_user_param
+        params
+        .require(:user)
+        .permit(
+            :id,
+            :user_name,
+            :user_id,
+            :password,
+            :self_introduction,
+            :email,
+            :phone_number,
+            :birthday,
+            :image,
+            :can_like_notification,
+            :can_coment_notification,
+            :can_message_notification,
+            :can_calender_notification,
+            :created_at,
+            :update_at
+        )
     end
 end

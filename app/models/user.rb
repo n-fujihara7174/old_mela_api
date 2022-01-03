@@ -4,9 +4,14 @@ class User < ApplicationRecord
     has_many :message
     has_many :message_user
 
-    #def get_login_user_profile
-    #    return @user
-    #end
+    has_secure_password
+
+    validates :user_name, :user_id, :password_digest, :email, :birthday, presence: true
+    validates :user_id, :email, :phone_number, uniqueness: true
+    validates :user_name, :user_id, :password_digest, length: {maximum: 45}
+    validates :self_introduction, length: {maximum: 120}
+    validates :email, length: {maximum: 256}
+    validates :phone_number, length: {maximum: 11}
 
     Post_count_query = "(SELECT COUNT(id) AS post_count FROM posts WHERE user_id = ?) AS post_count_query"
     Like_count_query = "(SELECT COUNT(likes.id) AS like_count FROM posts INNER JOIN likes ON posts.id = likes.post_id WHERE posts.user_id = ?) AS like_count_query"
