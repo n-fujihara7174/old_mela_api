@@ -6,12 +6,12 @@ class User < ApplicationRecord
 
     has_secure_password
 
-    validates :user_name, :user_id, :password_digest, :email, :birthday, presence: true
-    validates :user_id, :email, :phone_number, uniqueness: true
-    validates :user_name, :user_id, :password_digest, length: {maximum: 45}
-    validates :self_introduction, length: {maximum: 120}
-    validates :email, length: {maximum: 256}
-    validates :phone_number, length: {maximum: 11}
+    validates :user_name, :user_id, :password_digest, :email, :birthday, presence: {message: "必ず入力してください"}
+    validates :user_id, :email, :phone_number, uniqueness: {message: "この%{attribute}はすでに使用済みです"}
+    validates :user_name, :user_id, :password_digest, length: {maximum: 45, message: "45文字以下で入力してください"}
+    validates :self_introduction, length: {maximum: 120, message: "120文字以下で入力してください"}
+    validates :email, length: {maximum: 256, message: "256文字以下で入力してください"}
+    validates :phone_number, length: {maximum: 11, message: "11文字以下で入力してください"}, numericality: {message: "数値のみを入力してください"}
 
     Post_count_query = "(SELECT COUNT(id) AS post_count FROM posts WHERE user_id = ?) AS post_count_query"
     Like_count_query = "(SELECT COUNT(likes.id) AS like_count FROM posts INNER JOIN likes ON posts.id = likes.post_id WHERE posts.user_id = ?) AS like_count_query"

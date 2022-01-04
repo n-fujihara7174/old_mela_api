@@ -18,9 +18,11 @@ class UsersController < ApplicationController
 
     def update
         @user = User.find(get_id[:id])
+        logger.debug "user_param : #{get_user_param.to_s}"
         if @user.update(get_user_param)
             render :json => @user
         else
+            logger.debug "@user.error : #{@user.errors.to_s}"
             render :json => @user.errors, status: :unprocessable_entity
         end
     end
