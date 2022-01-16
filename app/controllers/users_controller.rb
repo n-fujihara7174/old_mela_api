@@ -13,7 +13,14 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.find(get_id)
+        @user = User.new(get_user_param)
+        @user.id = nil
+        if @user.save
+            render :json => @user
+        else
+            logger.debug "@user.error : #{@user.errors.class}"
+            render :json => @user.errors, status: :unprocessable_entity
+        end
     end
 
     def update
@@ -22,7 +29,7 @@ class UsersController < ApplicationController
         if @user.update(get_user_param)
             render :json => @user
         else
-            logger.debug "@user.error : #{@user.errors.to_s}"
+            logger.debug "@user.error : #{@user.errors.class}"
             render :json => @user.errors, status: :unprocessable_entity
         end
     end
@@ -41,15 +48,17 @@ class UsersController < ApplicationController
             :user_name,
             :user_id,
             :password,
+            :password_digest,
             :self_introduction,
             :email,
             :phone_number,
             :birthday,
             :image,
             :can_like_notification,
-            :can_coment_notification,
+            :can_comment_notification,
             :can_message_notification,
             :can_calender_notification,
+            :is_delete,
             :created_at,
             :update_at
         )
