@@ -25,9 +25,7 @@ class User < ApplicationRecord
 
     def self.search_user_id_or_email(parameter)
         #Rails.logger.debug "book.delete_flg #{self.joins(:post).select('users.*,posts.*').where("user_name like ?", "%#{user_name}%").size}"
-        users = self
-                .where("users.user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%")
-                .order(user_id: :ASC)
+        users = self.where("users.user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(user_id: :ASC)
     end
 
     def self.join_post_find_id(id)
