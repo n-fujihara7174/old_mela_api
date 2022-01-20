@@ -34,6 +34,11 @@ class UsersController < ApplicationController
         end
     end
 
+    def userNameList
+        @users = User.get_user_name_list
+        render :json => @users
+    end
+
     private
 
     def get_id

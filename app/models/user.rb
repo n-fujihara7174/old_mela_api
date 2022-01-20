@@ -38,4 +38,13 @@ class User < ApplicationRecord
         User.select('*').from("#{sanitize_post_count_query}, #{sanitize_like_count_query}, #{sanitize_follow_count_query}, #{sanitize_follower_count_query}, #{sanitize_message_user_count_query}, users")
                    .where('users.id = ?', id).order(user_id: :ASC)
     end
+
+    def self.find_by_user_name(user_name)
+        User.select('id').find_by(user_name)
+    end
+
+    def self.get_user_name_list
+        User.select('user_name').order(user_name: :ASC)
+    end
+
 end
