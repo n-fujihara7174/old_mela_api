@@ -44,7 +44,7 @@ class User < ApplicationRecord
     end
 
     def self.get_user_name_list
-        User.select('user_name').order(user_name: :ASC)
+        User.order(user_name: :ASC).pluck(:user_name)
     end
 
 end

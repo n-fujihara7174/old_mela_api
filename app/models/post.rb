@@ -2,7 +2,7 @@ class Post < ApplicationRecord
     belongs_to :user
     has_many :like
 
-    validates :user_id, :post_contents {message: "必ず入力してください"} #必須チェック
+    validates :user_id, :post_contents, presence:  {message: "必ず入力してください"} #必須チェック
     validates :email, length: {maximum: 240, message: "256文字以下で入力してください"}  #メールアドレス : 長さチェック
 
     #全件検索
