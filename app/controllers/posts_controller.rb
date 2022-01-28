@@ -8,14 +8,23 @@ class PostsController < ApplicationController
   end
 
   def show
-    @user = User.join_post_find_id(params[:id])
-    render :json => @user
+    @post = Post.get_post(params[:id])
+    render :json => @post
   end
 
   def create
     @post = Post.new(get_post_param)
     @post.id = nil
-    @post.user_id = User.find_by_user_name
+    @user = User.get_user_by_user_id(get_unique_user_id.fetch(:unique_user_id))
+
+    #入力されたユーザーIDのユーザーが見つかったか？
+    if(@user)
+      @post.user_id = @user.id
+    else
+      #見つからなかった場合、バリデーションに引っかかる値を代入
+      @post.user_id = 0
+    end
+
     if @post.save
         render :json => @post
     else
@@ -23,7 +32,40 @@ class PostsController < ApplicationController
     end
   end
 
+
+
+  def update
+    @post = Post.find(get_id.fetch(:id))
+    @post.assign_attributes(get_post_param)
+    @user = User.get_user_by_user_id(get_unique_user_id.fetch(:unique_user_id))
+
+    #入力されたユーザーIDのユーザーが見つかったか？
+    if(@user)
+      @post.user_id = @user.id
+    else
+      #見つからなかった場合、バリデーションに引っかかる値を代入
+      @post.user_id = 0
+    end
+
+    if @post.update(user_id: @post.user_id,
+                    post_contents: @post.post_contents,
+                    post_image: @post.post_image,
+                    is_delete: @post.is_delete)
+      render :json => @post
+    else
+        render :json => @post.errors, status: :unprocessable_entity
+    end
+  end
+
   private
+
+  def get_id
+    params.require(:post).permit(:id)
+  end
+
+  def get_unique_user_id
+    params.require(:post).permit(:unique_user_id)
+  end
 
   def get_post_param
     params
@@ -36,6 +78,6 @@ class PostsController < ApplicationController
         :is_delete,
         :created_at,
     )
-end
+  end
 
 end

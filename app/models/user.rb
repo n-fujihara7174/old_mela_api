@@ -39,12 +39,12 @@ class User < ApplicationRecord
                    .where('users.id = ?', id).order(user_id: :ASC)
     end
 
-    def self.find_by_user_name(user_name)
-        User.select('id').find_by(user_name)
+    def self.get_user_id_list
+        User.order(user_id: :ASC).pluck(:user_id)
     end
 
-    def self.get_user_name_list
-        User.order(user_name: :ASC).pluck(:user_name)
+    def self.get_user_by_user_id(user_id)
+        User.find_by(user_id: user_id)
     end
 
 end

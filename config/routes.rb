@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   resources :users
   resources :posts
 
-  get '/userNameList', to: 'users#userNameList'
+  get '/userIdList', to: 'users#userIdList'
 
 end

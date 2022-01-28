@@ -24,18 +24,16 @@ class UsersController < ApplicationController
     end
 
     def update
-        @user = User.find(get_id[:id])
-        logger.debug "user_param : #{get_user_param.to_s}"
+        @user = User.find(get_id)
         if @user.update(get_user_param)
             render :json => @user
         else
-            logger.debug "@user.error : #{@user.errors.class}"
             render :json => @user.errors, status: :unprocessable_entity
         end
     end
 
-    def userNameList
-        @users = User.get_user_name_list
+    def userIdList
+        @users = User.get_user_id_list
         render :json => @users
     end
 
