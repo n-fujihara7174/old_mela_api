@@ -44,7 +44,7 @@ class User < ApplicationRecord
     end
 
     def self.get_user_by_user_id(user_id)
-        User.find_by(user_id: user_id)
+        self.where('users.user_id = ? and users.is_delete = True',  user_id)
     end
 
 end

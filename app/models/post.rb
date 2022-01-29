@@ -1,7 +1,8 @@
 class Post < ApplicationRecord
-    belongs_to :user
+    belongs_to :user, optional: true
     has_many :like
 
+    validates :user, presence: {message: "存在するユーザーIDを入力してください"}
     validates :post_contents, presence:  {message: "必ず入力してください"} #必須チェック
     validates :post_contents, length: {maximum: 240, message: "240文字以下で入力してください"}  #投稿内容 : 長さチェック
     validates :post_image, length: {maximum: 240, message: "1000文字以下で入力してください"}  #画像のパス : 長さチェック
@@ -37,5 +38,6 @@ class Post < ApplicationRecord
         .joins(:user) \
         .where("posts.id = ?", id)
     end
+
 
 end

@@ -18,7 +18,7 @@ class PostsController < ApplicationController
     @user = User.get_user_by_user_id(get_unique_user_id.fetch(:unique_user_id))
 
     #入力されたユーザーIDのユーザーが見つかったか？
-    if(@user)
+    if(@user.empty?)
       @post.user_id = @user.id
     else
       #見つからなかった場合、バリデーションに引っかかる値を代入
@@ -39,12 +39,16 @@ class PostsController < ApplicationController
     @post.assign_attributes(get_post_param)
     @user = User.get_user_by_user_id(get_unique_user_id.fetch(:unique_user_id))
 
+    logger.debug "@user.empty? : #{@user.empty?}"
+    logger.debug "@user.to_yaml : #{@user.to_yaml}"
+    logger.debug "@user.nil? : #{@user.nil?}"
+
     #入力されたユーザーIDのユーザーが見つかったか？
-    if(@user)
-      @post.user_id = @user.id
+    if(@user.empty?)
+      @post.user_id = 0
     else
       #見つからなかった場合、バリデーションに引っかかる値を代入
-      @post.user_id = 0
+      @post.user_id = @user.id
     end
 
     if @post.update(user_id: @post.user_id,
