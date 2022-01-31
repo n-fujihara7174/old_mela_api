@@ -38,11 +38,7 @@ class PostsController < ApplicationController
     @post = Post.find(get_id.fetch(:id))
     @post.assign_attributes(get_post_param)
     @user = User.get_user_by_user_id(get_unique_user_id.fetch(:unique_user_id))
-
-    logger.debug "@user.empty? : #{@user.empty?}"
-    logger.debug "@user.to_yaml : #{@user.to_yaml}"
-    logger.debug "@user.nil? : #{@user.nil?}"
-
+    
     #入力されたユーザーIDのユーザーが見つかったか？
     if(@user.empty?)
       @post.user_id = 0
