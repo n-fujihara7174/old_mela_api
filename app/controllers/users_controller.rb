@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     end
 
     def update
-        @user = User.find(get_id)
+        @user = User.find(get_id.fetch(:id))
         if @user.update(get_user_param)
             render :json => @user
         else
