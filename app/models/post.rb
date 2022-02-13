@@ -39,5 +39,6 @@ class Post < ApplicationRecord
         .where("posts.id = ?", id)
     end
 
+    
 
 end

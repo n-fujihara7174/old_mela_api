@@ -18,17 +18,19 @@ class UsersController < ApplicationController
         if @user.save
             render :json => @user
         else
-            logger.debug "@user.error : #{@user.errors.class}"
-            render :json => @user.errors, status: :unprocessable_entity
+            error_messages = @user.extraction_error_message
+            render :json => error_messages, status: :unprocessable_entity
         end
     end
 
     def update
         @user = User.find(get_id.fetch(:id))
+
         if @user.update(get_user_param)
             render :json => @user
         else
-            render :json => @user.errors, status: :unprocessable_entity
+            error_messages = @user.extraction_error_message
+            render :json => error_messages, status: :unprocessable_entity
         end
     end
 
@@ -51,7 +53,7 @@ class UsersController < ApplicationController
             :user_name,
             :user_id,
             :password,
-            :password_digest,
+            :password_confirmation,
             :self_introduction,
             :email,
             :phone_number,
