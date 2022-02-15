@@ -33,8 +33,6 @@ class PostsController < ApplicationController
     end
   end
 
-
-
   def update
     @post = Post.find(get_id.fetch(:id))
     @post.assign_attributes(get_post_param)
@@ -58,6 +56,9 @@ class PostsController < ApplicationController
       render :json => error_messages, status: :unprocessable_entity
     end
   end
+
+
+
 
   private
 
