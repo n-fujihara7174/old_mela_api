@@ -9,6 +9,8 @@ class UsersController < ApplicationController
 
     def show
         @user = User.join_post_find_id(params[:id])
+        @user.delete(:password_digest)
+        logger.debug "@user : #{@user.inspect}"
         render :json => @user
     end
 
@@ -52,8 +54,6 @@ class UsersController < ApplicationController
             :id,
             :user_name,
             :user_id,
-            :password,
-            :password_confirmation,
             :self_introduction,
             :email,
             :phone_number,

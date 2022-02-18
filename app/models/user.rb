@@ -27,19 +27,24 @@ class User < ApplicationRecord
         users = self.where("users.user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(user_id: :ASC)
     end
 
-    Post_count_query = "(SELECT COUNT(id) AS post_count FROM posts WHERE user_id = ?) AS post_count_query"
-    Like_count_query = "(SELECT COUNT(likes.id) AS like_count FROM posts INNER JOIN likes ON posts.id = likes.post_id WHERE posts.user_id = ?) AS like_count_query"
-    Follow_count_query = "(SELECT COUNT(follower_user_id) AS follow_count FROM follows WHERE follow_user_id = ? ) AS follow_count_query"
-    Follower_count_query = "(SELECT COUNT(follow_user_id) AS follower_count FROM follows WHERE follower_user_id = ? ) AS follower_count_query"
-    Message_user_count_query = "(SELECT COUNT(opposite_user_id) AS message_user_count FROM message_users WHERE user_id = ?) AS message_user_count_query"
+    #from句にselectした結果を持たせる書き方
+    # Post_count_query = "(SELECT COUNT(id) AS post_count FROM posts WHERE user_id = ?) AS post_count_query"
+    # Like_count_query = "(SELECT COUNT(likes.id) AS like_count FROM posts INNER JOIN likes ON posts.id = likes.post_id WHERE posts.user_id = ?) AS like_count_query"
+    # Follow_count_query = "(SELECT COUNT(follower_user_id) AS follow_count FROM follows WHERE follow_user_id = ? ) AS follow_count_query"
+    # Follower_count_query = "(SELECT COUNT(follow_user_id) AS follower_count FROM follows WHERE follower_user_id = ? ) AS follower_count_query"
+    # Message_user_count_query = "(SELECT COUNT(opposite_user_id) AS message_user_count FROM message_users WHERE user_id = ?) AS message_user_count_query"
+    # def self.join_post_find_id(id)
+    #     sanitize_post_count_query = User.sanitize_sql_array([Post_count_query, id])
+    #     sanitize_like_count_query = User.sanitize_sql_array([Like_count_query, id])
+    #     sanitize_follow_count_query = User.sanitize_sql_array([Follow_count_query, id])
+    #     sanitize_follower_count_query = User.sanitize_sql_array([Follower_count_query, id])
+    #     sanitize_message_user_count_query = User.sanitize_sql_array([Message_user_count_query, id])
+    #     User.select('*').from("#{sanitize_post_count_query}, #{sanitize_like_count_query}, #{sanitize_follow_count_query}, #{sanitize_follower_count_query}, #{sanitize_message_user_count_query}, users")
+    #                .where('users.id = ?', id).order(user_id: :ASC)
+    # end
+
     def self.join_post_find_id(id)
-        sanitize_post_count_query = User.sanitize_sql_array([Post_count_query, id])
-        sanitize_like_count_query = User.sanitize_sql_array([Like_count_query, id])
-        sanitize_follow_count_query = User.sanitize_sql_array([Follow_count_query, id])
-        sanitize_follower_count_query = User.sanitize_sql_array([Follower_count_query, id])
-        sanitize_message_user_count_query = User.sanitize_sql_array([Message_user_count_query, id])
-        User.select('*').from("#{sanitize_post_count_query}, #{sanitize_like_count_query}, #{sanitize_follow_count_query}, #{sanitize_follower_count_query}, #{sanitize_message_user_count_query}, users")
-                   .where('users.id = ?', id).order(user_id: :ASC)
+        User.where('users.id = ?', id).order(user_id: :ASC)
     end
 
     def self.get_user_id_list
