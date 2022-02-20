@@ -9,7 +9,7 @@ class Post < ApplicationRecord
 
     #全件検索
     def self.user_join_all()
-        Post.select('posts.*, users.user_name') \
+        Post.select('posts.*, users.user_id as users_table_user_id') \
         .joins(:user) \
         .order(user_id: :ASC) \
         .order(created_at: :DESC)
@@ -26,7 +26,7 @@ class Post < ApplicationRecord
 
     #投稿内容検索
     def self.search_post_contents(parameter)
-        Post.select('posts.*, users.user_name as unique_user_id') \
+        Post.select('posts.*, users.user_id as users_table_user_id') \
         .joins(:user) \
         .where("post_contents like ?", "%#{parameter.to_s}%") \
         .order(user_id: :ASC) \
@@ -34,11 +34,8 @@ class Post < ApplicationRecord
     end
 
     def self.get_post(id)
-        Post.select('posts.*, users.user_id as unique_user_id') \
+        Post.select('posts.*, users.user_id as users_table_user_id') \
         .joins(:user) \
         .where("posts.id = ?", id)
     end
-
-    
-
 end
