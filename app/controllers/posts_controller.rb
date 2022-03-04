@@ -1,17 +1,26 @@
 class PostsController < ApplicationController
 
+  # ****************************************************************************************
+    # 一覧取得処理
+  # ****************************************************************************************
   def index
     @posts = Post.user_join_all
-    @posts = @posts.search_user_name(params[:user_name]) if params[:user_name].present?
+    @posts = @posts.search_user_id(params[:users_table_user_id]) if params[:users_table_user_id].present?
     @posts = @posts.search_post_contents(params[:post_contents]) if params[:post_contents].present?
     render :json => @posts
   end
 
+  # ****************************************************************************************
+    # 単体の投稿情報取得処理
+  # ****************************************************************************************
   def show
     @post = Post.get_post(params[:id])
     render :json => @post
   end
 
+  # ****************************************************************************************
+    # 登録処理
+  # ****************************************************************************************
   def create
     #フォームで入力したユーザーIDのサロゲートキーを取得( 投稿をユーザーを紐づけるために必要 )
     @user = User.get_user_by_user_id(get_users_table_user_id.fetch(:users_table_user_id))
@@ -39,6 +48,9 @@ class PostsController < ApplicationController
     end
   end
 
+  # ****************************************************************************************
+    # 更新処理
+  # ****************************************************************************************
   def update
     @post = Post.find(get_id.fetch(:id))
     @user = User.get_user_by_user_id(get_users_table_user_id.fetch(:users_table_user_id))

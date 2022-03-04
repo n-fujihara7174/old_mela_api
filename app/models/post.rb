@@ -16,10 +16,10 @@ class Post < ApplicationRecord
     end
 
     #ユーザー名検索
-    def self.search_user_name(parameter)
-        Post.select('posts.*, users.user_name') \
+    def self.search_user_id(parameter)
+        Post.select('posts.*, users.user_id as users_table_user_id') \
         .joins(:user) \
-        .where("users.user_name like ?", "%#{parameter.to_s}%") \
+        .where("users.user_id like ?", "%#{parameter.to_s}%") \
         .order(user_id: :ASC) \
         .order(created_at: :DESC)
     end
