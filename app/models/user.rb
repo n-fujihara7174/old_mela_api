@@ -10,12 +10,11 @@ class User < ApplicationRecord
 
     validates :user_name, presence: true, length: {maximum: 45, message: "45文字以下で入力してください"}
     validates :user_id, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 45, message: "45文字以下で入力してください"}
-    #validates :password, presence: true, length: {maximum: 45, message: "45文字以下で入力してください"}
     validates :self_introduction, length: {maximum: 120, message: "120文字以下で入力してください"}
     validates :email, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 256, message: "256文字以下で入力してください"}
     validates :phone_number, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 11, message: "11文字以下で入力してください"}, numericality: {message: "数値のみを入力してください"}
     validates :birthday, presence: true
-    #validate :is_date_correct_format , :date_valid
+    validate :is_date_correct_format , :date_valid
 
     #値取得
     def self.join_post_all()
@@ -23,8 +22,8 @@ class User < ApplicationRecord
     end
 
     def self.search_user_id_or_email(parameter)
-        #Rails.logger.debug "book.delete_flg #{self.joins(:post).select('users.*,posts.*').where("user_name like ?", "%#{user_name}%").size}"
-        users = self.where("users.user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(user_id: :ASC)
+        Rails.logger.debug "parameter.to_s #{parameter.to_s}"
+        users = self.where("user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(user_id: :ASC)
     end
 
     #from句にselectした結果を持たせる書き方
@@ -56,14 +55,14 @@ class User < ApplicationRecord
     end
 
     #バリデーション
-    # def is_date_correct_format
-    #     unless %r{\\d{4}/\\d{2}\\d{2}}.match(:birthday)
-    #         errors.add(:birthday, "2000/01/01の形式で入力してください")
-    #     end
-    # end
+    def is_date_correct_format
+        unless %r{\d{4}-\d{2}-\d{2}}.match(birthday.to_s)
+            errors.add(:birthday, "2000/01/01の形式で入力してください")
+        end
+    end
 
-    # def date_valid
-    #     !!Date.parse(:birthday) rescue errors.add(:birthday, "有効な日付を入力してください")
-    # end
+    def date_valid
+        Date.parse(birthday.to_s) rescue errors.add(:birthday, "有効な日付を入力してください")
+    end
 
 end

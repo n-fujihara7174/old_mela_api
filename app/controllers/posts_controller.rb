@@ -53,6 +53,8 @@ class PostsController < ApplicationController
   # ****************************************************************************************
   def update
     @post = Post.find(get_id.fetch(:id))
+
+    #投稿画面から送信されたユーザーIDでusersテーブルからusers.idを取得する
     @user = User.get_user_by_user_id(get_users_table_user_id.fetch(:users_table_user_id))
 
     #入力されたユーザーIDのユーザーが見つかったか？
@@ -63,7 +65,10 @@ class PostsController < ApplicationController
       user_id = 0
     end
 
+    #user_idを追加するためパラメータを取得
     post_param = get_post_param
+
+    #ユーザーIDを更新パラメータに追加
     post_param[:user_id] = user_id
 
     if @post.update(post_param)

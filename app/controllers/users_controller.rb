@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
 
+    # ****************************************************************************************
+    # 一覧取得処理
+  # ****************************************************************************************
     def index
         @users = User.join_post_all
         #logger.debug "user.all : #{@users.size}"
@@ -7,6 +10,9 @@ class UsersController < ApplicationController
         render :json => @users
     end
 
+    # ****************************************************************************************
+    # 単体の投稿情報取得処理
+    # ****************************************************************************************
     def show
         @user = User.join_post_find_id(params[:id])
         @user.delete(:password_digest)
@@ -14,6 +20,9 @@ class UsersController < ApplicationController
         render :json => @user
     end
 
+    # ****************************************************************************************
+    # 登録処理
+    # ****************************************************************************************
     def create
         @user = User.new(get_user_param)
         @user.id = nil
@@ -25,6 +34,9 @@ class UsersController < ApplicationController
         end
     end
 
+    # ****************************************************************************************
+    # 更新処理
+    # ****************************************************************************************
     def update
         @user = User.find(get_id.fetch(:id))
 
@@ -36,10 +48,15 @@ class UsersController < ApplicationController
         end
     end
 
+    # ****************************************************************************************
+    # ユーザーIDリストを取得
+    # ****************************************************************************************
     def userIdList
         @users = User.get_user_id_list
         render :json => @users
     end
+
+
 
     private
 
@@ -51,7 +68,6 @@ class UsersController < ApplicationController
         params
         .require(:user)
         .permit(
-            :id,
             :user_name,
             :user_id,
             :self_introduction,
