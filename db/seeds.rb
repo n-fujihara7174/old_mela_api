@@ -1,8 +1,8 @@
 20.times do |n|
     User.create!(
-        user_name: "test_user#{n}",
+        name: "test_user#{n}",
         user_id: "test_display_user_id#{n}",
-        password_digest: "test",
+        password: "test",
         self_introduction: "test_self_introduction#{n}",
         email: "test_email#{n}@test.com",
         phone_number: "#{n}#{n}#{n}#{n}",

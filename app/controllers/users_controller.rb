@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
 
+    before_action :authenticate_user!
+
     # ****************************************************************************************
     # 一覧取得処理
-  # ****************************************************************************************
+    # ****************************************************************************************
     def index
         @users = User.join_post_all
         #logger.debug "user.all : #{@users.size}"
@@ -16,7 +18,6 @@ class UsersController < ApplicationController
     def show
         @user = User.join_post_find_id(params[:id])
         @user.delete(:password_digest)
-        logger.debug "@user : #{@user.inspect}"
         render :json => @user
     end
 

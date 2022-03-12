@@ -1,18 +1,22 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+    # Include default devise modules.
+    # Include default devise modules. Others available are:
+    # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+    devise :database_authenticatable, :registerable,
+            :recoverable, :rememberable, :trackable, :validatable,
+            :confirmable, :omniauthable
+    include DeviseTokenAuth::Concerns::User
+
     has_many :post
     has_many :like
     has_many :message
     has_many :message_user
 
-    has_secure_password
+    #has_secure_password
 
     UniquenessErrorMessage = "この%{attribute}はすでに使用済みです"
 
-    validates :user_name, presence: true, length: {maximum: 45, message: "45文字以下で入力してください"}
+    validates :name, presence: true, length: {maximum: 45, message: "45文字以下で入力してください"}
     validates :user_id, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 45, message: "45文字以下で入力してください"}
     validates :self_introduction, length: {maximum: 120, message: "120文字以下で入力してください"}
     validates :email, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 256, message: "256文字以下で入力してください"}

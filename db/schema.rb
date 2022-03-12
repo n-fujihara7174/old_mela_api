@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_09_221613) do
+ActiveRecord::Schema.define(version: 2022_01_16_205227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,27 +59,37 @@ ActiveRecord::Schema.define(version: 2022_03_09_221613) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "user_name", limit: 45, null: false
+    t.string "name", limit: 45, null: false
     t.string "user_id", limit: 45, null: false
-    t.string "password_digest", limit: 45, null: false
+    t.string "password", limit: 45, null: false
     t.string "self_introduction", limit: 120
     t.string "email", limit: 256, null: false
     t.integer "phone_number"
     t.date "birthday", null: false
     t.text "image"
-    t.boolean "can_like_notification", null: false
-    t.boolean "can_comment_notification", null: false
-    t.boolean "can_message_notification", null: false
-    t.boolean "can_calender_notification", null: false
-    t.boolean "is_delete", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean "can_like_notification", default: true, null: false
+    t.boolean "can_comment_notification", default: true, null: false
+    t.boolean "can_message_notification", default: true, null: false
+    t.boolean "can_calender_notification", default: true, null: false
+    t.boolean "is_delete", default: false, null: false
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
+    t.boolean "allow_password_change", default: false
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.json "tokens"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   add_foreign_key "follows", "users", column: "follow_user_id"
