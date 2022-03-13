@@ -61,12 +61,11 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
   create_table "users", force: :cascade do |t|
     t.string "name", limit: 45, null: false
     t.string "user_id", limit: 45, null: false
-    t.string "password", limit: 45, null: false
-    t.string "self_introduction", limit: 120
+    t.string "self_introduction", limit: 120, default: ""
     t.string "email", limit: 256, null: false
-    t.integer "phone_number"
+    t.integer "phone_number", default: 0
     t.date "birthday", null: false
-    t.text "image"
+    t.text "image", default: ""
     t.boolean "can_like_notification", default: true, null: false
     t.boolean "can_comment_notification", default: true, null: false
     t.boolean "can_message_notification", default: true, null: false
@@ -84,8 +83,6 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.json "tokens"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
