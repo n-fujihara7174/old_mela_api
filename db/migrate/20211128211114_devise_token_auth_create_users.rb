@@ -14,7 +14,6 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       t.boolean :can_comment_notification, null: false, default: true
       t.boolean :can_message_notification, null: false, default: true
       t.boolean :can_calender_notification, null: false, default: true
-      t.boolean :is_delete, null: false, default: false
 
       ## Required
       t.string :provider, :null => false, :default => "email"
@@ -44,6 +43,8 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
 
       ## Tokens
       t.json :tokens
+
+      t.timestamps
 
 
     end
