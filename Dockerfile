@@ -2,7 +2,9 @@ FROM ruby:3.0.2-alpine3.14
 
 ENV HOME="/api" \
     LANG=C.UTF-8 \
-    TZ=Asia/Tokyo
+    TZ=Asia/Tokyo \
+    EDITOR="vi"
+
 
 RUN mkdir ${HOME}
 WORKDIR ${HOME}

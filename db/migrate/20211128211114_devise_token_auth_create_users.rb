@@ -5,11 +5,11 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       ##UserInfo
       t.string :name, null: false, limit: 45
       t.string :user_id, null: false, unique: true, limit: 45
-      t.string :self_introduction, limit: 120, :default => ""
+      t.string :self_introduction, limit: 120, default: ""
       t.string :email, null: false,unique: true, limit: 256
-      t.integer :phone_number, limit: 4, :default => 0
-      t.date :birthday, null: false, :default => ""
-      t.text :image,:default => ""
+      t.string :phone_number, null: false, limit: 11, default: ""
+      t.date :birthday, null: false, default: ""
+      t.text :image, default: ""
       t.boolean :can_like_notification, null: false, default: true
       t.boolean :can_comment_notification, null: false, default: true
       t.boolean :can_message_notification, null: false, default: true

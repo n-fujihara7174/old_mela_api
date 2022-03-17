@@ -20,9 +20,12 @@ class User < ApplicationRecord
     validates :user_id, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 45, message: "45文字以下で入力してください"}
     validates :self_introduction, length: {maximum: 120, message: "120文字以下で入力してください"}
     validates :email, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 256, message: "256文字以下で入力してください"}
-    validates :phone_number, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 11, message: "11文字以下で入力してください"}, numericality: {message: "数値のみを入力してください"}
+    validates :phone_number, length: {maximum: 11, message: "11文字以下で入力してください"}
     validates :birthday, presence: true
+    #日付のバリデーション
     validate :is_date_correct_format , :date_valid
+    #電話番号のバリデーション
+    validate :unique_phone_number
 
     #値取得
     def self.join_post_all()
@@ -71,6 +74,19 @@ class User < ApplicationRecord
 
     def date_valid
         Date.parse(birthday.to_s) rescue errors.add(:birthday, "有効な日付を入力してください")
+    end
+
+    def is_phone_number_correct_format
+        unless %r{\d{3}-\d{4}-\d{4}}.match(phone_number.to_s) or phone_number.to_s == ""
+            errors.add(:phone_number, "")
+        end
+    end
+
+    def unique_phone_number
+        get_users_by_phone_number = User.where('users.phone_number = ?', phone_number).count
+        if !(phone_number = "") and (get_users_by_phone_number > 0)
+            errors.add(:phone_number, UniquenessErrorMessage)
+        end
     end
 
 end

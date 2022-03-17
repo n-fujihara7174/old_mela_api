@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
     t.string "user_id", limit: 45, null: false
     t.string "self_introduction", limit: 120, default: ""
     t.string "email", limit: 256, null: false
-    t.integer "phone_number", default: 0
+    t.string "phone_number", limit: 11, default: "", null: false
     t.date "birthday", null: false
     t.text "image", default: ""
     t.boolean "can_like_notification", default: true, null: false
