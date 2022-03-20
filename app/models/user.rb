@@ -16,8 +16,7 @@ class User < ApplicationRecord
 
     UniquenessErrorMessage = "この%{attribute}はすでに使用済みです"
 
-    validates :name, presence: true, length: {maximum: 45, message: "45文字以下で入力してください"}
-    validates :user_id, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 45, message: "45文字以下で入力してください"}
+    validates :name, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 45, message: "45文字以下で入力してください"}
     validates :self_introduction, length: {maximum: 120, message: "120文字以下で入力してください"}
     validates :email, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 256, message: "256文字以下で入力してください"}
     validates :phone_number, length: {maximum: 11, message: "11文字以下で入力してください"}
@@ -29,12 +28,12 @@ class User < ApplicationRecord
 
     #値取得
     def self.join_post_all()
-        User.order(user_id: :ASC)
+        User.order(name: :ASC)
     end
 
     def self.search_user_id_or_email(parameter)
         Rails.logger.debug "parameter.to_s #{parameter.to_s}"
-        users = self.where("user_id like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(user_id: :ASC)
+        users = self.where("name like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(name: :ASC)
     end
 
     #from句にselectした結果を持たせる書き方
@@ -54,15 +53,15 @@ class User < ApplicationRecord
     # end
 
     def self.join_post_find_id(id)
-        User.where('users.id = ?', id).order(user_id: :ASC)
+        User.where('users.id = ?', id).order(name: :ASC)
     end
 
     def self.get_user_id_list
-        User.order(user_id: :ASC).pluck(:user_id)
+        User.order(name: :ASC).pluck(:name)
     end
 
-    def self.get_user_by_user_id(user_id)
-        self.where('users.user_id = ? and users.is_delete = False',  user_id).first
+    def self.get_user_by_user_id(name)
+        self.where('users.name = ? and users.is_delete = False',  name).first
     end
 
     #バリデーション

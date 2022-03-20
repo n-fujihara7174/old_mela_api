@@ -60,7 +60,6 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", limit: 45, null: false
-    t.string "user_id", limit: 45, null: false
     t.string "self_introduction", limit: 120, default: ""
     t.string "email", limit: 256, null: false
     t.string "phone_number", limit: 11, default: "", null: false

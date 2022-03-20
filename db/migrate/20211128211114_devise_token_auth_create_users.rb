@@ -3,8 +3,7 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
     create_table(:users) do |t|
 
       ##UserInfo
-      t.string :name, null: false, limit: 45
-      t.string :user_id, null: false, unique: true, limit: 45
+      t.string :name, null: false, unique: true, limit: 45
       t.string :self_introduction, limit: 120, default: ""
       t.string :email, null: false,unique: true, limit: 256
       t.string :phone_number, null: false, limit: 11, default: ""
