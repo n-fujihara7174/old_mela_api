@@ -30,6 +30,9 @@ gem 'devise'
 gem 'devise_token_auth'
 gem 'omniauth', '1.9.1'
 
+#ロール制御
+gem 'cancancan'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

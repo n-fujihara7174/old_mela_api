@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_16_205227) do
+ActiveRecord::Schema.define(version: 2022_03_23_000641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,22 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_role_grants", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["role_id"], name: "index_user_role_grants_on_role_id"
+    t.index ["user_id", "role_id"], name: "index_user_role_grants_on_user_id_and_role_id", unique: true
+    t.index ["user_id"], name: "index_user_role_grants_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", limit: 45, null: false
     t.string "self_introduction", limit: 120, default: ""
@@ -76,6 +92,11 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
     t.datetime "reset_password_sent_at"
     t.boolean "allow_password_change", default: false
     t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
@@ -98,4 +119,6 @@ ActiveRecord::Schema.define(version: 2022_01_16_205227) do
   add_foreign_key "messages", "users", column: "receiver_user_id"
   add_foreign_key "messages", "users", column: "sender_user_id"
   add_foreign_key "posts", "users"
+  add_foreign_key "user_role_grants", "roles"
+  add_foreign_key "user_role_grants", "users"
 end

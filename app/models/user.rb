@@ -7,13 +7,19 @@ class User < ApplicationRecord
             :confirmable, :omniauthable
     include DeviseTokenAuth::Concerns::User
 
-    has_many :post
-    has_many :like
-    has_many :message
+    #########################################################################
+    #関連
+    #########################################################################
+    has_many :posts
+    has_many :likes
+    has_many :messages
     has_many :message_user
+    has_many :roles, through: :user_role_grants
 
-    #has_secure_password
-
+    #########################################################################
+    #バリデーション
+    #########################################################################
+    #バリデーションメッセージを追加
     UniquenessErrorMessage = "この%{attribute}はすでに使用済みです"
 
     validates :name, presence: true, uniqueness: {message: UniquenessErrorMessage}, length: {maximum: 45, message: "45文字以下で入力してください"}
@@ -26,7 +32,9 @@ class User < ApplicationRecord
     #電話番号のバリデーション
     validate :unique_phone_number
 
-    #値取得
+    #########################################################################
+    #select
+    #########################################################################
     def self.join_post_all()
         User.order(name: :ASC)
     end
@@ -64,23 +72,29 @@ class User < ApplicationRecord
         self.where('users.name = ? and users.is_delete = False',  name).first
     end
 
-    #バリデーション
+    #########################################################################
+    #独自バリデーション定義
+    #########################################################################
+    #日付のフォーマットチェック
     def is_date_correct_format
         unless %r{\d{4}-\d{2}-\d{2}}.match(birthday.to_s)
             errors.add(:birthday, "2000/01/01の形式で入力してください")
         end
     end
 
+    #有効な日付バリデーション
     def date_valid
         Date.parse(birthday.to_s) rescue errors.add(:birthday, "有効な日付を入力してください")
     end
 
+    #電話番号のフォーマットバリデーション
     def is_phone_number_correct_format
         unless %r{\d{3}-\d{4}-\d{4}}.match(phone_number.to_s) or phone_number.to_s == ""
             errors.add(:phone_number, "")
         end
     end
 
+    #電話番号がユニークかどうかを判定(空白は重複可)
     def unique_phone_number
         get_users_by_phone_number = User.where('users.phone_number = ?', phone_number).count
         if !(phone_number = "") and (get_users_by_phone_number > 0)

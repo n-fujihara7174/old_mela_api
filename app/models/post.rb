@@ -9,32 +9,32 @@ class Post < ApplicationRecord
 
     #全件検索
     def self.user_join_all()
-        Post.select('posts.*, users.user_id as users_table_user_id') \
+        Post.select('posts.*, users.name') \
         .joins(:user) \
-        .order(user_id: :ASC) \
+        .order(name: :ASC) \
         .order(created_at: :DESC)
     end
 
     #ユーザー名検索
-    def self.search_user_id(parameter)
-        Post.select('posts.*, users.user_id as users_table_user_id') \
+    def self.search_name(parameter)
+        Post.select('posts.*, users.name') \
         .joins(:user) \
-        .where("users.user_id like ?", "%#{parameter.to_s}%") \
-        .order(user_id: :ASC) \
+        .where("users.name like ?", "%#{parameter.to_s}%") \
+        .order(name: :ASC) \
         .order(created_at: :DESC)
     end
 
     #投稿内容検索
     def self.search_post_contents(parameter)
-        Post.select('posts.*, users.user_id as users_table_user_id') \
+        Post.select('posts.*, users.name') \
         .joins(:user) \
         .where("post_contents like ?", "%#{parameter.to_s}%") \
-        .order(user_id: :ASC) \
+        .order(name: :ASC) \
         .order(created_at: :DESC)
     end
 
     def self.get_post(id)
-        Post.select('posts.*, users.user_id as users_table_user_id') \
+        Post.select('posts.*, users.name') \
         .joins(:user) \
         .where("posts.id = ?", id)
     end

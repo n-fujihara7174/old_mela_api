@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   # ****************************************************************************************
   def index
     @posts = Post.user_join_all
-    @posts = @posts.search_user_id(params[:users_table_user_id]) if params[:users_table_user_id].present?
+    @posts = @posts.search_user_id(params[:users_table_name]) if params[:users_table_name].present?
     @posts = @posts.search_post_contents(params[:post_contents]) if params[:post_contents].present?
     render :json => @posts
   end
@@ -23,7 +23,7 @@ class PostsController < ApplicationController
   # ****************************************************************************************
   def create
     #フォームで入力したユーザーIDのサロゲートキーを取得( 投稿をユーザーを紐づけるために必要 )
-    @user = User.get_user_by_user_id(get_users_table_user_id.fetch(:users_table_user_id))
+    @user = User.get_user_by_name(get_users__name.fetch(:name))
 
     #入力されたユーザーIDのユーザーが見つかったか？
     if(@user)
@@ -55,7 +55,7 @@ class PostsController < ApplicationController
     @post = Post.find(get_id.fetch(:id))
 
     #投稿画面から送信されたユーザーIDでusersテーブルからusers.idを取得する
-    @user = User.get_user_by_user_id(get_users_table_user_id.fetch(:users_table_user_id))
+    @user = User.get_user_by_name(get_users_name.fetch(:name))
 
     #入力されたユーザーIDのユーザーが見つかったか？
     if(@user)
@@ -88,8 +88,8 @@ class PostsController < ApplicationController
     params.require(:post).permit(:id)
   end
 
-  def get_users_table_user_id
-    params.require(:post).permit(:users_table_user_id)
+  def get_users_name
+    params.require(:post).permit(:name)
   end
 
   def get_post_param
