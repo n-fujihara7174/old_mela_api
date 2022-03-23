@@ -81,10 +81,6 @@ ActiveRecord::Schema.define(version: 2022_03_23_000641) do
     t.string "phone_number", limit: 11, default: "", null: false
     t.date "birthday", null: false
     t.text "image", default: ""
-    t.boolean "can_like_notification", default: true, null: false
-    t.boolean "can_comment_notification", default: true, null: false
-    t.boolean "can_message_notification", default: true, null: false
-    t.boolean "can_calender_notification", default: true, null: false
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false

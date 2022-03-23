@@ -9,10 +9,6 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       t.string :phone_number, null: false, limit: 11, default: ""
       t.date :birthday, null: false, default: ""
       t.text :image, default: ""
-      t.boolean :can_like_notification, null: false, default: true
-      t.boolean :can_comment_notification, null: false, default: true
-      t.boolean :can_message_notification, null: false, default: true
-      t.boolean :can_calender_notification, null: false, default: true
 
       ## Required
       t.string :provider, :null => false, :default => "email"

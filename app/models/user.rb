@@ -39,7 +39,7 @@ class User < ApplicationRecord
         User.order(name: :ASC)
     end
 
-    def self.search_user_id_or_email(parameter)
+    def self.search_name_or_email(parameter)
         Rails.logger.debug "parameter.to_s #{parameter.to_s}"
         users = self.where("name like ? or email like ?", "%#{parameter.to_s}%", "%#{parameter.to_s}%").order(name: :ASC)
     end
@@ -64,12 +64,12 @@ class User < ApplicationRecord
         User.where('users.id = ?', id).order(name: :ASC)
     end
 
-    def self.get_user_id_list
+    def self.get_name_list
         User.order(name: :ASC).pluck(:name)
     end
 
-    def self.get_user_by_user_id(name)
-        self.where('users.name = ? and users.is_delete = False',  name).first
+    def self.get_user_by_name(name)
+        self.where('users.name = ?',  name).first
     end
 
     #########################################################################

@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
 
+  before_action :authenticate_user!
+
   # ****************************************************************************************
     # 一覧取得処理
   # ****************************************************************************************
@@ -23,7 +25,7 @@ class PostsController < ApplicationController
   # ****************************************************************************************
   def create
     #フォームで入力したユーザーIDのサロゲートキーを取得( 投稿をユーザーを紐づけるために必要 )
-    @user = User.get_user_by_name(get_users__name.fetch(:name))
+    @user = User.get_user_by_name(get_users_name.fetch(:name))
 
     #入力されたユーザーIDのユーザーが見つかったか？
     if(@user)
@@ -85,22 +87,20 @@ class PostsController < ApplicationController
   private
 
   def get_id
-    params.require(:post).permit(:id)
+    params.permit(:id)
   end
 
   def get_users_name
-    params.require(:post).permit(:name)
+    params.permit(:name)
   end
 
   def get_post_param
     params
-    .require(:post)
     .permit(
         :id,
         :post_contents,
         :post_image,
         :is_delete,
-        :created_at,
     )
   end
 

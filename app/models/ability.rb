@@ -5,6 +5,7 @@ class Ability
 
   def initialize(user)
 
+    #userが未定義ならnewする
     user ||= User.new
 
     #管理者権限
